@@ -1,6 +1,7 @@
 import Header from "./partials/Header.jsx"
 import Footer from "./partials/Footer.jsx"
 import FilmTimes from "./FilmTimes.jsx";
+import Value from "./Value.jsx"
 import {
   BrowserRouter as Router,
   Routes as Switch,
@@ -13,14 +14,14 @@ function App() {
     <Router>
     <Header />
 <Switch>
-<Route path="/home" />
-<Route path="/times" />
+<Route path="/home" element={<FilmTimes />}/>
+<Route path="/times" element={<FilmTimes />}/>
 
-<Route path="/value" />
+<Route path="/value" element={<Value />}/>
 
 </Switch>
     </Router>
-    <FilmTimes />
+
     <Footer />
 
 

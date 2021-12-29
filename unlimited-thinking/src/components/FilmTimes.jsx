@@ -93,10 +93,6 @@ const FilmTimes =  () => {
 
 
 
-        function handleRemoveTime(e) {
-   
-
-        }
 
     return <Container className="film-container" maxWidth="lg">
 
