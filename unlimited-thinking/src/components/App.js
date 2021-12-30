@@ -7,6 +7,7 @@ import {
   Routes as Switch,
   Route,
 } from "react-router-dom";
+import Homepage from "./partials/Homepage.jsx";
 
 function App() {
   return (
@@ -14,14 +15,14 @@ function App() {
     <Router>
     <Header />
 <Switch>
-<Route path="/home" element={<FilmTimes />}/>
+<Route path="/" element={<Homepage/>} />
+<Route path="/home" element={<Homepage/>}/>
 <Route path="/times" element={<FilmTimes />}/>
 
 <Route path="/value" element={<Value />}/>
 
 </Switch>
     </Router>
-
     <Footer />
 
 

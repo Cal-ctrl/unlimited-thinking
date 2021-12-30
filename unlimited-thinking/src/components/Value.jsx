@@ -42,16 +42,16 @@ function Value () {
         const savingUpdate = e.target.value * -1
         setSavings(savingUpdate)
         }} />
-        <h5>Input monthly savings above</h5>
-    <Input placeholder="Ticket Price" sx={{mt: 50}} name="ticket" value={value} onChange={e => {
-        setValue(e.target.value);
-        const savingUpdate = e.target.value * -1
-        setSavings(savingUpdate)
+        <h5>Input monthly cost above</h5>
+    <Input placeholder="Ticket Price" name="ticket" value={ticketPrice} onChange={e => {
+
+        const ticket = e.target.value * 1
+        setTicketPrice(ticket)
         }} />
         <h5>Input your ticket price</h5>
 
         {cineworldFilmTimes.map((film, i) => (
-            <Card key={i} image={film.img} updateSaving={setSavings}/>
+            <Card key={i} image={film.img} updateSaving={setSavings} ticketPrice={ticketPrice}/>
         ))}
         
         <h1>You will save .... £<em>{Math.round(savings * 100) / 100}</em></h1>

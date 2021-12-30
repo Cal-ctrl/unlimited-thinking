@@ -3,7 +3,7 @@ import { Frame, useMotionValue, useTransform, useAnimation } from 'framer';
  
  
  // Card component with destructured props
- const Card = ({ image, updateSaving}) => {
+ const Card = ({ image, updateSaving, ticketPrice}) => {
     // To move the card as the user drags the cursor
     const motionValue = useMotionValue(0);
     
@@ -62,7 +62,8 @@ import { Frame, useMotionValue, useTransform, useAnimation } from 'framer';
               animControls.start({ x: info.point.x < 0 ? -200 : 200 });
               if (info.offset.x >= 0) {
                   updateSaving( prev => {
-                      prev += 9.99
+                      prev += ticketPrice
+                      console.log(`update savings calc after ticket price added ${prev}. Ticket price = ${ticketPrice}`)
                       return prev
                   })
               }

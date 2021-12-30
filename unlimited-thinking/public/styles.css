@@ -12,7 +12,7 @@
 }
 .value {
     text-align: center;
-    margin-bottom: 100px;
+    
 }
 .film-card {
     text-align: center;
@@ -23,4 +23,8 @@
     margin-top: 200px;
     align-items: center;
 
+}
+
+.homepage {
+    text-align: center;
 }
