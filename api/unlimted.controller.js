@@ -9,7 +9,12 @@ export default class unlimitedController {
         const filmArray = []
                 
         const date = new Date();
-                const browser = await puppeteer.launch();
+                const browser = await puppeteer.launch({
+                  'args' : [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox'
+                  ]
+                });
                 const page = await browser.newPage(); 
                 await page.goto(`https://www.cineworld.co.uk/cinemas/sheffield/031#/buy-tickets-by-cinema?in-cinema=031&at=${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}&view-mode=list`);
 
