@@ -18,6 +18,7 @@ function Value () {
         .then(res => {
             console.log(res)
             setCineworldFilmTimes(res.data)
+            setSavings(value * -1)
 
         })
         .catch(e => {
@@ -26,9 +27,9 @@ function Value () {
 
     }
 
-    const [value, setValue] = useState(0)
+    const [value, setValue] = useState(9.99)
     const [savings, setSavings] =useState(0)
-    const [ticketPrice, setTicketPrice] = useState(0)
+    const [ticketPrice, setTicketPrice] = useState(4.99)
 
 
 
@@ -36,8 +37,9 @@ function Value () {
     return (<div className="value">
     <h1>Is subscription cinema for you?</h1>
     <p>These movies are all out now or scheduled for the next 4 weeks, swipe right if your interested and the calculator will let you know how much you could saving signing up!</p>
-    <div className="frame-place"></div>
-    <Input placeholder="Monthly cost or service" sx={{mt: 50}} name="cost" value={value} onChange={e => {
+    
+    
+    <Input placeholder="Monthly cost or service" sx={{mt: 0}} name="cost" value={value} onChange={e => {
         setValue(e.target.value);
         const savingUpdate = e.target.value * -1
         setSavings(savingUpdate)
@@ -49,12 +51,13 @@ function Value () {
         setTicketPrice(ticket)
         }} />
         <h5>Input your ticket price</h5>
-
-        {cineworldFilmTimes.map((film, i) => (
+        <div className="frame-place">{cineworldFilmTimes.map((film, i) => (
             <Card key={i} image={film.img} updateSaving={setSavings} ticketPrice={ticketPrice}/>
-        ))}
+        ))}</div>
+
         
-        <h1>You will save .... £<em>{Math.round(savings * 100) / 100}</em></h1>
+        
+        <h1>You will save .... £<em>{Math.round(savings * 100) / 100}</em> this month!!</h1>
     </div>)
   
    

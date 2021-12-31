@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Frame, useMotionValue, useTransform, useAnimation } from 'framer';
+import { margin } from "@mui/system";
  
  
  // Card component with destructured props
@@ -27,18 +28,22 @@ import { Frame, useMotionValue, useTransform, useAnimation } from 'framer';
     // it is placed inside the card component
     // to make backgroundImage and backgroundColor dynamic
     const style = {
+      display: "block",
       backgroundImage: `url(${image})`,
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'contain',
       boxShadow: '5px 10px 18px #888888',
       borderRadius: 10,
-      height: 300
+      height: 300,
+      left: 0,
+      right: 0,
+      margin: "0 auto",      
     };
     
     return (
       <div className='film-card'> 
         <Frame
-          center
+          // center
           // Card can be drag only on x-axis
           drag='x'
           
