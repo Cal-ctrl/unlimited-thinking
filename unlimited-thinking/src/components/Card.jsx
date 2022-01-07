@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Frame, useMotionValue, useTransform, useAnimation } from 'framer';
-import { margin } from "@mui/system";
  
  
  // Card component with destructured props
@@ -67,7 +66,8 @@ import { margin } from "@mui/system";
               animControls.start({ x: info.point.x < 0 ? -200 : 200 });
               if (info.offset.x >= 0) {
                   updateSaving( prev => {
-                      prev += ticketPrice
+                      const ticket = parseFloat(ticketPrice)
+                      prev += ticket
                       console.log(`update savings calc after ticket price added ${prev}. Ticket price = ${ticketPrice}`)
                       return prev
                   })

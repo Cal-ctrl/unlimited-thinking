@@ -3,9 +3,14 @@ import UnlimitedDataService from "../services/unlimited.js"
 import FilmBox from "./FilmBox.jsx";
 import Box from '@mui/material/Box';
 import { Button, Container, Typography } from "@mui/material";
+import DateAdapter from '@mui/lab/AdapterMoment';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import TextField from '@mui/material/TextField';
 
 const FilmTimes =  () => {
     const [cineworldFilmTimes, setCineworldFilmTimes] = useState([])
+    const [dateSelected, setDateSelected] = useState(new Date())
 
     
     useEffect(() => {
@@ -90,22 +95,41 @@ const FilmTimes =  () => {
 
         }
 
+        function updateTimes (date) {
+            console.log(`Update times triggered for date: ${date}`)
+            const selectedMonth = date.toLocaleDateString(`en-GB`, {month: "2-digit"})
+            const selectedDay = date.toLocaleDateString(`en-GB`, {day: "2-digit"})
+            console.log(`Month: ${selectedMonth} Day: ${selectedDay}`)
+            UnlimitedDataService.getFilmInfoSpecific("sheffield", selectedDay, selectedMonth)
+            .then(res => {
+                console.log(`Date pick test: Success`)
+                console.log(res.data)
+                setCineworldFilmTimes(res.data)
+            })
+            .catch(e => {
+                console.error(`error in retrieving times for specific day: ${e}`)
+            })
+
+        }
+
 
 
 
 
     return <Container className="film-container" maxWidth="lg">
 
-        <Typography variant="h4">Selected times <Typography paragraph="true">(Films you cant make calculated by runtime below plus 25 mins for ads and trailers, click the button in this list to remove the time)</Typography></Typography>
+        <Typography variant="h4">Selected times <Typography paragraph={true} >(Films you cant make calculated by runtime below plus 25 mins for ads and trailers, click the button in this list to remove the time)</Typography></Typography>
         {
             cineworldFilmTimes.map((film, i) => {
 
-            return ( <div>
+            return ( <div key={i}>
                 {film.times.map((time, i) => {
-                    return time[4] && <div key={i}><Button onClick={ e => {
+                    const finish = new Date(time[2])
+                    return time[4] && <div key={i}><Button key={i} onClick={ e => {
                         changeButtonOnClick(time)
                         addFilm(e)
-                    }} sx={{display: "inline"}} name={film.name} value={time[0]} variant="contained">{time[0]}</Button><Typography sx={{display: "inline", ml: "10px"}} variant="h5">{film.name}</Typography> </div>
+                        
+                    }} sx={{display: "inline"}} name={film.name} value={time[0]} variant="contained">{time[0]} - {finish.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Button><Typography sx={{display: "inline", ml: "10px"}} variant="h5">{film.name}</Typography> </div>
                     })} 
                     </div>
         
@@ -116,7 +140,20 @@ const FilmTimes =  () => {
             })
         }
 
-    <Typography variant="h5">Todays film times @ Cineworld Sheffield <Typography paragraph="true">click the times to add to you watch list today</Typography></Typography>
+    <Typography variant="h5">Showing times for selected date<Typography paragraph={true} >Choose which times you would like to watch and they will be added to the list above</Typography></Typography>
+    <div id="date-select">
+    <LocalizationProvider dateAdapter={DateAdapter}>
+    <MobileDatePicker
+          label="Planning ahead?"
+          value={dateSelected}
+          onChange={(newValue) => {
+            setDateSelected(newValue);
+            updateTimes(new Date(dateSelected));
+          }}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        </LocalizationProvider>
+        </div>
     <Box  sx={{
         display: 'grid',
         gap: 1,

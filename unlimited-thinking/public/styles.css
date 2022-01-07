@@ -28,3 +28,7 @@
 .homepage {
     text-align: center;
 }
+
+#date-select{
+    margin: 10px 0;
+}

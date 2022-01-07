@@ -15,8 +15,17 @@ export default class unlimitedController {
                     '--disable-setuid-sandbox'
                   ]
                 });
+                let cinema = req.query.cinema ? req.query.cinema : "sheffield"
+                req.query.day && date.setDate(parseInt(req.query.day))
+                req.query.month && date.setMonth(parseInt(req.query.month) - 1)
+
                 const page = await browser.newPage(); 
-                await page.goto(`https://www.cineworld.co.uk/cinemas/sheffield/031#/buy-tickets-by-cinema?in-cinema=031&at=${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}&view-mode=list`);
+                console.log(`Queries: ${JSON.stringify(req.query)}`)
+                const selectedMonth = date.toLocaleDateString(`en-GB`, {month: "2-digit"})
+                const selectedDay = date.toLocaleDateString(`en-GB`, {day: "2-digit"})
+                console.log(`month: ${selectedMonth} and day: ${selectedDay}`)
+
+                await page.goto(`https://www.cineworld.co.uk/cinemas/${cinema}/031#/buy-tickets-by-cinema?in-cinema=031&at=${date.getFullYear()}-${selectedMonth}-${selectedDay}&view-mode=list`);
 
                 const data = await page.content()
                 const $ = cheerio.load(data)
@@ -26,7 +35,7 @@ export default class unlimitedController {
             
                 const genre = $(this).find(".qb-movie-info").children().first().text().replace(/[ |]/g, "");
                 const runtime = $(this).find(".qb-movie-info").children().last().text();
-                const img = "images/film-posters/" + fname.replace(/ *\([^)]*\) */g, "").replace(/[: ]/g, "_").toLowerCase() + ".jpg"
+                const img = "images/film-posters/" + fname.replace(/ *\([^)]*\) */g, "").replace(/[: ]/g, "_").replace(/'/g, "").toLowerCase() + ".jpg"
                 const times = []
                 // console.log(`name: ${fname}, runtime: ${runtime} and genre: ${genre}`);
 
@@ -36,11 +45,11 @@ export default class unlimitedController {
                   //Set up time array for manipulation later [string time, start time Date object, finish time date object, state controller]
                   const tempTimeArray = []
                   const startTimeStr = $(this).text().trim()
-                  const startTimeObj = new Date() 
+                  const startTimeObj = new Date(date) 
 
                   startTimeObj.setMinutes(parseInt(startTimeStr.slice(3,)))
                   startTimeObj.setHours(parseInt(startTimeStr.slice(0,2)))
-                  const finishTimeObj = new Date(startTimeObj.getTime() + ((parseInt(runtime)*60000) + 25 )) //25 is to allow for trailers and ads included in runtime
+                  const finishTimeObj = new Date(startTimeObj.getTime() + ((parseInt(runtime) + 25)  * 60000 )) //25 is to allow for trailers and ads included in runtime
 
                   tempTimeArray.push(startTimeStr) // Index 0  is string for the render
                   tempTimeArray.push(startTimeObj) // Index 1 start time
